@@ -174,7 +174,6 @@
 				".format(rupiah)",
 				".replace(\"Rp\", \"\")",
 				".replace(/\\./g, \",\")",
-				");",
 		],
 		"description": "Log output to console"
 	},
