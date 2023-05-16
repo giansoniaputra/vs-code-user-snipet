@@ -171,7 +171,7 @@
 				"currency: \"IDR\",",
 				"minimumFractionDigits: 0,",
 			"})",
-				".format(rupiah)",
+				".format($1)",
 				".replace(\"Rp\", \"\")",
 				".replace(/\\./g, \",\")",
 		],
