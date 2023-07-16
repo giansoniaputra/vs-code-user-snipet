@@ -27,8 +27,8 @@
 		"body": [
 			"$.ajax({",
 				"data: {$1 : $2},",
-				"url: \"$2\",",
-				"type: \"$3\",",
+				"url: \"$3\",",
+				"type: \"$4\",",
 				"dataType: 'json',",
 				"success: function (response) {",
 
@@ -46,7 +46,7 @@
 				"data[obj.name] = obj.value;",
 			"});",
 			"$.ajax({",
-				"data: $('#$3 $4').serialize(),",
+				"data: $('#$1 $2').serialize(),",
 				"url: \"$5\",",
 				"type: \"$6\",",
 				"dataType: 'json',",
@@ -113,7 +113,7 @@
 						"textAreaElement.after(feedbackElement);",
 					"}",
 					"inputElement.each(function () {",
-						"if (inputElement.attr(\"type\") == \"text\") {",
+						"if (inputElement.attr(\"type\") == \"text\" || inputElement.attr(\"type\") == \"number\") {",
 							"inputElement.on(\"click\", function () {",
 								"$(this).removeClass(\"is-invalid\");",
 							"});",
