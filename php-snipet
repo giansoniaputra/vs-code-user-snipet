@@ -1,0 +1,50 @@
+{
+	// Place your snippets for php here. Each snippet is defined under a snippet name and has a prefix, body and 
+	// description. The prefix is what is used to trigger the snippet and the body will be expanded and inserted. Possible variables are:
+	// $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders. Placeholders with the 
+	// same ids are connected.
+	// Example:
+	"php": {
+		"prefix": "hp",
+		"body": [
+			"<?php $1 ?>;"
+		],
+		"description": "Log output to console"
+	},
+	"foreach": {
+		"prefix": "ulang",
+		"body": [
+		"foreach($$1 as $$2){",
+		"$3",
+		"}"
+		],
+		"description": "Log output to console"
+	},
+	"DataTables Laravel": {
+		"prefix": "dtlaravel",
+		"body": [
+		"public function dataTables(Request $$request)",
+			"{",
+			"$$query = DB::table('pelatish as a')",
+            "->join('absensi_pelatihs', 'a.pelatih_unique', '=', 'b.unique')",
+            "->select('a.*', 'b.nama')",
+            "->get();",
+				"return DataTables::of($$query)->addColumn('action', function ($$row) {",
+					"$$actionBtn =",
+						"'",
+						"<button class=\"btn btn-rounded btn-sm btn-warning text-dark edit-button\" title=\"Edit Data\" data-unique=\"' . $$row->unique . '\"><i class=\"fas fa-edit\"></i></button>",
+						"<button class=\"btn btn-rounded btn-sm btn-danger text-white delete-button\" title=\"Hapus Data\" data-unique=\"' . $$row->unique . '\" data-token=\"' . csrf_token() . '\"><i class=\"fas fa-trash-alt\"></i></button>';",
+					"return $$actionBtn;",
+				"})->make(true);",
+			"}"
+		],
+		"description": "Log output to console"
+	},
+	"Return Json Response Laravel": {
+		"prefix": "rtjson",
+		"body": [
+		"return response()->json(['$1' => $2]);"
+		],
+		"description": "Log output to console"
+	}
+}
