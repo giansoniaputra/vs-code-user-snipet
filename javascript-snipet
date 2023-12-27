@@ -17,6 +17,17 @@
 		"body": "document.querySelector('#$1')",
 		"description": "Log output to console"
 	},
+	"Simple Money Format": {
+		"prefix": "money",
+		"body": [
+"			$(\"input.money\").simpleMoneyFormat({"
+"				currencySymbol: \"Rp\","
+"				decimalPlaces: 0,"
+"				thousandsSeparator: \".\","
+"			});"
+		],
+		"description": "Log output to console"
+	},
 	"Query Selector Class": {
 		"prefix": "qsc",
 		"body": "document.querySelector('.$1')",
@@ -217,6 +228,69 @@
 		],
 		"description": "Log output to console"
 	},
+	"Datatables Init2": {
+		"prefix": "datatablesInit2",
+		"body": [
+"			let table = $(\"#table-guru\").DataTable({"
+"				responsive: true,"
+"				responsive: !0,"
+"				language: {"
+"					paginate: {"
+"						previous: \"<i class='ri-arrow-left-s-line'>\","
+"						next: \"<i class='ri-arrow-right-s-line'>\","
+"					},"
+"				},"
+"				drawCallback: function () {"
+"					$(\".dataTables_paginate > .pagination\").addClass("
+"						\"pagination-rounded\""
+"					);"
+"				},"
+"				autoWidth: false,"
+"				serverSide: true,"
+"				ajax: {",
+					"url: \"/$2\",",
+					"type: \"GET\",",
+					"data: function (d) {",
+						"d.id = $(\"#unique_no_reg\").val();",
+					"},",
+				"},",
+"				columns: ["
+"					{"
+"						data: null,"
+"						orderable: false,"
+"						render: function (data, type, row, meta) {"
+"							var pageInfo = $(\"#table-guru\").DataTable().page.info();"
+"							var index = meta.row + pageInfo.start + 1;"
+"							return index;"
+"						},"
+"					},"
+"					{"
+"						data: \"npk\","
+"					},"
+"					{"
+"						data: \"nama_guru\","
+"					},"
+"					{"
+"						data: \"action\","
+"						orderable: true,"
+"						searchable: true,"
+"					},"
+"				],"
+"				columnDefs: ["
+"					{"
+"						targets: [3], // index kolom atau sel yang ingin diatur"
+"						className: \"text-center\", // kelas CSS untuk memposisikan isi ke tengah"
+"					},"
+"					{"
+"						searchable: false,"
+"						orderable: false,"
+"						targets: 0, // Kolom nomor, dimulai dari 0"
+"					},"
+"				],"
+"			});"
+		],
+		"description": "Log output to console"
+	},
 	"Currency": {
 		"prefix": "currency",
 		"body": [
@@ -267,4 +341,20 @@
 		],
 		"description": "Log output to console"
 	},
+	"Delete Sweet Alert": {
+		"prefix": "sweetsalert",
+		"body": "Swal.fire(\"Deleted!\", response.success, \"success\");"
+		"description": "Log output to console"
+	},
+	"Format Tanggal Indonesia": {
+		"prefix": "dateIndo",
+		"body":[
+			"function formatDateIndonesia(dateString) {",
+				"let options = { year: 'numeric', month: 'long', day: 'numeric' };",
+				"let date = new Date(dateString);",
+				"return date.toLocaleDateString('id-ID', options);",
+			"}"
+		]
+	},
+
 }
