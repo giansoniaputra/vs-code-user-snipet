@@ -12,6 +12,102 @@
 		],
 		"description": "Log output to console"
 	},
+	"Convert Base64 Image": {
+		"prefix": "base64Image",
+		"body": [
+			"let modal = $(\"#$1\")",
+			"let image = document.getElementById('$2');",
+			"let cropper, reader, file",
+			"$(\"body\").on(\"change\", \"#$3\", function (e) {",
+			"    let files = e.target.files;",
+			"    let done = function (url) {",
+			"        image.src = url;",
+			"        modal.modal(\"show\");",
+			"    }",
+			"    if (files && files.length > 0) {",
+			"        file = files[0];",
+			"        if (URL) {",
+			"            done(URL.createObjectURL(file));",
+			"        } else if (FileReader) {",
+			"            reader = new FileReader();",
+			"            reader.onload = function (e) {",
+			"                done(reader.result);",
+			"            }",
+			"            reader.readAsDataURL(file)",
+			"        }",
+			"    }",
+			"",
+			"})",
+			"",
+			"modal.on('shown.bs.modal', function () {",
+			"    cropper = new Cropper(image, {",
+			"        aspectRatio: 1 / 1,",
+			"        preview: '.preview'",
+			"    })",
+			"}).on('hidden.bs.modal', function () {",
+			"    cropper.destroy();",
+			"    cropper = null;",
+			"})",
+			"",
+			"$(\"#$1\").on(\"click\", \".$4\", function () {",
+			"    canvas = cropper.getCroppedCanvas({",
+			"        width: 1000,",
+			"        height: 1000,",
+			"    })",
+			"    canvas.toBlob(function (blob) {",
+			"        let image = document.querySelector(\"#$5\");",
+			"        // const imgPre = document.querySelector(\"#$6\");",
+			"        const oFReader = new FileReader();",
+			"        oFReader.readAsDataURL(blob);",
+			"        oFReader.onload = function (oFREvent) {",
+			"            var file = dataURLtoFile(oFREvent.target.result, \"photo-product.png\");",
+			"            let container = new DataTransfer();",
+			"            container.items.add(file);",
+			"            image.files = container.files;",
+			"            var newfile = image.files[0];",
+			"",
+			"        }",
+			"    })",
+			"})",
+			"",
+			"function dataURLtoFile(dataurl, filename) {",
+			"",
+			"    var arr = dataurl.split(','),",
+			"        mime = arr[0].match(/:(.*?);/)[1],",
+			"        bstr = atob(arr[1]),",
+			"        n = bstr.length,",
+			"        u8arr = new Uint8Array(n);",
+			"",
+			"    while (n--) {",
+			"        u8arr[n] = bstr.charCodeAt(n);",
+			"    }",
+			"",
+			"    return new File([u8arr], filename, { type: mime });",
+			"}"
+		],
+		"description": "Log output to console"
+	},
+	"filesPhoto": {
+		"prefix": "photofiles",
+		"body": [
+"			let photo = document.querySelector(\"input[name='$1']\")",
+			"",
+"        	let formData = new FormData();",
+"        	if (photo.value != '') {",
+"        	    formData.append('photo', photo.files[0]);",
+"        	}",
+			"",
+"        	// Mendapatkan data inputan lainnya dari hasil serialize",
+"        	let serializedData = $(\"form[id='form-product']\").serialize();;// Ganti #form dengan ID formulir Anda",
+"        	let otherData = serializedData.split(\"&\");",
+			"",
+"        	otherData.forEach(function (item) {",
+"        	    let keyValue = item.split(\"=\");",
+"        	    formData.append(keyValue[0], decodeURIComponent(keyValue[1]));",
+"        	});",
+		],
+		"description": "Log output to console"
+	},
 	"Query Selector Id": {
 		"prefix": "qsi",
 		"body": "document.querySelector('#$1')",
@@ -60,24 +156,24 @@
 	"form ajax": {
 		"prefix": "formajax",
 		"body": [
-			"let formdata = $('#$1 $2').serializeArray();",
-			"let data = {}",
-			"$(formdata).each(function (index, obj) {",
-			"data[obj.name] = obj.value;",
-			"});",
+			"let formdata = $('#$1 $2').serialize();",
 			"$.ajax({",
-			"data: $('#$1 $2').serialize(),",
+			"data: formdata,",
 			"url: \"$5\",",
 			"type: \"$6\",",
 			"dataType: 'json',",
 			"success: function (response) {",
-			"if(response.errors) {",
-			"displayErrors(response.errors);",
-			"}else{",
-			"table.ajax.reload();",
-			"$(\"#modal-pelatih\").modal(\"hide\");",
-			"Swal.fire(\"Good job!\", response.success, \"success\");",
-			"}",
+			"    $(button).removeAttr(\"disabled\");",
+			"    reset();",
+			"    table.ajax.reload()",
+			"    Swal.fire(\"Success!\", response.success, \"success\");",
+			"},",
+			"error: function (xhr, status, error) {",
+			"    if (xhr.status == 400) {",
+			"        $(button).removeAttr(\"disabled\");",
+			"        let errors = xhr.responseJSON.errors",
+			"        displayErrors(errors)",
+			"    }",
 			"}",
 			"});",
 		],
@@ -167,6 +263,87 @@
 			"});",
 			"});",
 			"}",
+		],
+		"description": "Log output to console"
+	},
+	"error hendler node js": {
+		"prefix": "errorhandlerNode",
+		"body": [
+			"function displayErrorsNode(errors) {"
+			"	// menghapus class 'is-invalid' dan pesan error sebelumnya"
+			"	$(\"input.form-control\").removeClass(\"is-invalid\");"
+			"	$(\"select.form-control\").removeClass(\"is-invalid\");"
+			"	$(\"div.invalid-feedback\").remove();"""
+			"	// menampilkan pesan error baru"
+			"	$.each(errors, function (location, msg) {"
+			"		let field = msg.path"
+			"		let inputElement = $(\"input[name=\" + field + \"]\");"
+			"		let selectElement = $(\"select[name=\" + field + \"]\");"
+			"		let textAreaElement = $(\"textarea[name=\" + field + \"]\");"
+			"		let feedbackElement = $("
+			"			'<div class=\"invalid-feedback ml-2\"></div>'"
+			"		);"
+			"		$(\".btn-close\").on(\"click\", function () {"
+			"			inputElement.each(function () {"
+			"				$(this).removeClass(\"is-invalid\");"
+			"			});"
+			"			textAreaElement.each(function () {"
+			"				$(this).removeClass(\"is-invalid\");"
+			"			});"
+			"			selectElement.each(function () {"
+			"				$(this).removeClass(\"is-invalid\");"
+			"			});"
+			"		});"
+			"		// $.each(msg, function (index, message) {"
+			"		feedbackElement.append("
+			"			$('<p class=\"p-0 m-0 text-danger\" style=\"font-style:italic\">' + message +\"</p>\")"
+			"		);"
+			"		// });"
+			"		if (inputElement.length > 0) {"
+			"			inputElement.addClass(\"is-invalid\");"
+			"			inputElement.after(feedbackElement);"
+			"		}"
+			"		if (selectElement.length > 0) {"
+			"			selectElement.addClass(\"is-invalid\");"
+			"			selectElement.after(feedbackElement);"
+			"		}"
+			"		if (textAreaElement.length > 0) {"
+			"			textAreaElement.addClass(\"is-invalid\");"
+			"			textAreaElement.after(feedbackElement);"
+			"		}"
+			"		inputElement.each(function () {"
+			"			if (inputElement.attr(\"type\") == \"text\" || inputElement.attr(\"type\") == \"number\") {"
+			"				inputElement.on(\"click\", function () {"
+			"					$(this).removeClass(\"is-invalid\");"
+			"				});"
+			"				inputElement.on(\"change\", function () {"
+			"					$(this).removeClass(\"is-invalid\");"
+			"				});"
+			"			} else if (inputElement.attr(\"type\") == \"date\") {"
+			"				inputElement.on(\"change\", function () {"
+			"					$(this).removeClass(\"is-invalid\");"
+			"				});"
+			"			} else if (inputElement.attr(\"type\") == \"password\") {"
+			"				inputElement.on(\"click\", function () {"
+			"					$(this).removeClass(\"is-invalid\");"
+			"				});"
+			"			} else if (inputElement.attr(\"type\") == \"email\") {"
+			"				inputElement.on(\"click\", function () {"
+			"					$(this).removeClass(\"is-invalid\");"
+			"				});"
+			"			}"
+			"		});"
+			"		textAreaElement.each(function () {"
+			"			textAreaElement.on(\"click\", function () {"
+			"				$(this).removeClass(\"is-invalid\");"
+			"			});"
+			"		});"
+			"		selectElement.each(function () {"
+			"			selectElement.on(\"click\", function () {"
+			"				$(this).removeClass(\"is-invalid\");"
+			"			});"
+			"		});"
+			"	});}"
 		],
 		"description": "Log output to console"
 	},
@@ -393,5 +570,30 @@
 	"Ready": {
 		"prefix": "docready",
 		"body": "$(document).ready(function() {$1});"
+	},
+	"Disable Button": {
+		"prefix": "disableButton",
+		"body": [
+			"let button = $(this)",
+			"$(button).attr(\"disabled\", \"true\");"
+		]
+	},
+	"Enable Button": {
+		"prefix": "enableButton",
+		"body": "$(button).removeAttr(\"disabled\");"
+	},
+	"Rset Inputan": {
+		"prefix": "resetInputan",
+		"body": [
+			"//KOSONGKAN SEMUA INPUTAN",
+			"function reset() {",
+			"	let form = $(\"form[id='$1']\").serializeArray();",
+			"	form.map((a) => {",
+			"		$(`#${a.name}`).val(\"\");",
+			"	})",
+			"	$(\"#$2\").html(\"\")",
+			"	$(\"#$3\").html(\"\")",
+			"}",
+		]
 	},
 }
