@@ -12,6 +12,20 @@
 		],
 		"description": "Log output to console"
 	},
+	"Image To BASE64": {
+		"prefix": "imageToBase64",
+		"body": [
+			"let image = document.querySelector(\"#gambar\");//Gambar Yang Di Upload",
+			"let imgPre = document.querySelector(\"#img-preview\");//Gambar yang akan di tempeli",
+			"",
+			"const oFReader = new FileReader();",
+			"oFReader.readAsDataURL(image.files[0]);",
+			"oFReader.onload = function (oFREvent) {",
+			"imgPre.src = oFREvent.target.result;",
+			"}",
+		],
+		"description": "Log output to console"
+	},
 	"Convert Base64 Image": {
 		"prefix": "base64Image",
 		"body": [
@@ -212,7 +226,7 @@
 			"",
 			"$.each(messages, function (index, message) {",
 			"feedbackElement.append(",
-			"$('<p class=\"p-0 m-0 text-center\">' + message + \"</p>\")",
+			"$('<p class=\"p-0 m-0\" style=\"font-style=:italic\">' + message + \"</p>\")",
 			");",
 			"});",
 			"",
