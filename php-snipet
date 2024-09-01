@@ -11,31 +11,43 @@
 		],
 		"description": "Log output to console"
 	},
+	"Join Laravel": {
+		"prefix": "joinlaravel",
+		"body": [
+			"DB::table(' as a')",
+			"->join(' as b', 'a.', '=', 'b.')",
+			"->select('a.*')",
+			"->get()",
+		],
+		"description": "Log output to console"
+	},
 	"foreach": {
 		"prefix": "ulang",
 		"body": [
-		"foreach($$1 as $$2){",
-		"$3",
-		"}"
+			"foreach($$1 as $$2){",
+			"$3",
+			"}"
 		],
 		"description": "Log output to console"
 	},
 	"DataTables Laravel": {
 		"prefix": "dtlaravel",
 		"body": [
-		"public function dataTables(Request $$request)",
+			"public function dataTables(Request $$request)",
 			"{",
-			"$$query = DB::table('pelatish as a')",
-            "->join('absensi_pelatihs', 'a.pelatih_unique', '=', 'b.unique')",
-            "->select('a.*', 'b.nama')",
-            "->get();",
-				"return DataTables::of($$query)->addColumn('action', function ($$row) {",
-					"$$actionBtn =",
-						"'",
-						"<button class=\"btn btn-rounded btn-sm btn-warning text-dark edit-button\" title=\"Edit Data\" data-unique=\"' . $$row->unique . '\"><i class=\"fas fa-edit\"></i></button>",
-						"<button class=\"btn btn-rounded btn-sm btn-danger text-white delete-button\" title=\"Hapus Data\" data-unique=\"' . $$row->unique . '\" data-token=\"' . csrf_token() . '\"><i class=\"fas fa-trash-alt\"></i></button>';",
-					"return $$actionBtn;",
-				"})->make(true);",
+			"$$query = DB::table('$1 as a')",
+			"->join('$2', 'a.', '=', 'b.')",
+			"->select('a.*')",
+			"->get();",
+			"return DataTables::of($$query)->addColumn('action', function ($$row) {",
+			"$$actionBtn =",
+			"'",
+			"<div class=\"d-flex justify-content-center\">",
+			"<button class=\"btn btn-rounded btn-sm btn-warning text-dark edit-button\" title=\"Edit Data\" data-uuid=\"' . $$row->uuid . '\"><i class=\"fas fa-edit\"></i></button>",
+			"<button class=\"btn btn-rounded btn-sm btn-danger text-white delete-button\" title=\"Hapus Data\" data-uuid=\"' . $$row->uuid . '\" data-token=\"' . csrf_token() . '\"><i class=\"fas fa-trash-alt\"></i></button>';",
+			"</div>",
+			"return $$actionBtn;",
+			"})->make(true);",
 			"}"
 		],
 		"description": "Log output to console"
@@ -43,7 +55,87 @@
 	"Return Json Response Laravel": {
 		"prefix": "rtjson",
 		"body": [
-		"return response()->json(['$1' => $2]);"
+			"return response()->json(['$1' => $2]);"
+		],
+		"description": "Log output to console"
+	},
+	"Validator": {
+		"prefix": "buatvalidator",
+		"body": [
+	"		$$rules = [",
+	"			'$1' => '',",
+	"		];",
+	"		$$pesan = [",
+	"			'' => '',",
+	"		];",
+	"		$$validator = Validator::make($$request->all(), $$rules, $$pesan);",
+	"		if ($$validator->fails()) {",
+	"			return response()->json(['errors' => $$validator->errors()]);",
+	"		}",
+		],
+		"description": "Log output to console"
+	},
+	"Replace Koma": {
+		"prefix": "replaceCurrency",
+		"body": "preg_replace('/[,]/', '', $1)",
+		"description": "Log output to console"
+	},
+	"fpdf": {
+		"prefix": "fpdfClass",
+		"body": [
+			"protected $pdf;",
+			"public function __construct()",
+			"{",
+			"    $$this->pdf = new FPDF;",
+			"}",
+			"public function laporan_ranking(Request $$request)",
+			"{",
+			"$$this->pdf->AddPage('P', 'A4');",
+			"$$this->pdf->SetFont('Arial', 'B', '16');",
+			"$$this->pdf->Cell(0, 6, '$1', '0', 1, 'C');",
+			"$$this->pdf->Ln();",
+			"$$this->pdf->SetFont('Arial', '', '9');",
+			"$$this->pdf->Cell(40, 5, \"$2: \", '0', 0, 'L');",
+			"$$this->pdf->Cell(25, 5, ': ', '0', 0, 'L');",
+			"$$this->pdf->Ln();",
+			"$$this->pdf->Cell(40, 5, \"$3\", '0', 0, 'L');",
+			"$$this->pdf->Cell(25, 5, ': ', '0', 0, 'L');",
+			"$$this->pdf->Ln();",
+			"$$this->pdf->Cell(40, 5, \"$4\", '0', 0, 'L');",
+			"$$this->pdf->Cell(25, 5, ': ', '0', 0, 'L');",
+			"$$this->pdf->Ln();",
+			"$$this->pdf->Ln();",
+			"//Membuat kolom judul tabel",
+			"$$this->pdf->SetFont('Arial', '', '8');",
+			"$$this->pdf->SetFillColor(233, 236, 239);",
+			"$$this->pdf->SetTextColor(0);",
+			"$$this->pdf->SetDrawColor(0, 0, 0);",
+			"$$this->pdf->Cell(8, 7, \"No\", 1, '0', 'C', true);",
+			"$$this->pdf->Cell(55, 7, \"Nama Pelanggan\", 1, '0', 'L', true);",
+			"$$this->pdf->Cell(35, 7, \"Nilai\", 1, '0', 'C', true);",
+			"$$this->pdf->Cell(25, 7, \"Ranking\", 1, '0', 'C', true);",
+			"// $$this->pdf->Cell(29, 7, \"Harga\", 1, '0', 'C', true);",
+			"// $$this->pdf->Cell(12, 7, \"Diskon\", 1, '0', 'C', true);",
+			"// $$this->pdf->Cell(27, 7, \"Total\", 1, '0', 'C', true);",
+			"$$this->pdf->Ln();",
+			"//Membuat kolom isi tabel",
+			"$$this->pdf->SetFont('Arial', '', '8');",
+			"$$this->pdf->SetFillColor(255);",
+			"$$this->pdf->SetTextColor(0);",
+			"$$this->pdf->SetDrawColor(0);",
+			"foreach  as => ) {",
+			"    $$this->pdf->Cell(8, 7,  + 1, 1, '0', 'C', true);",
+			"    $$this->pdf->Cell(55, 7, , 1, '0', 'L', true);",
+			"    $$this->pdf->Cell(35, 7, , 1, '0', 'C', true);",
+			"    $$this->pdf->Cell(25, 7, , 1, '0', 'C', true);",
+			"    // $$this->pdf->Cell(29, 7,, 1, '0', 'R', true);",
+			"    // $$this->pdf->Cell(12, 7,  '%', 1, '0', 'R', true);",
+			"    // $$this->pdf->Cell(27, 7,, 1, '0', 'R', true);",
+			"    $$this->pdf->Ln();",
+			"}",
+			"$$this->pdf->Output(\".pdf\", 'D');",
+			"exit;",
+			"}"
 		],
 		"description": "Log output to console"
 	}
