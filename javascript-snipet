@@ -12,6 +12,13 @@
 		],
 		"description": "Log output to console"
 	},
+	"Webalert": {
+		"prefix": "wealert",
+		"body": [
+			"webalerts.createAlert(\"success\", response.success, 2000);"
+		],
+		"description": "Log output to console"
+	},
 	"Image To BASE64": {
 		"prefix": "imageToBase64",
 		"body": [
@@ -127,6 +134,24 @@
 		"body": "document.querySelector('#$1')",
 		"description": "Log output to console"
 	},
+	"Just Number": {
+		"prefix": "onlyNumber",
+		"body": [
+			"$(\"#$1\").on(\"keydown\", function (e) {"
+			"	let key = e.key;"
+			"	if ("
+			"		!/[0-9,]/.test(key) &&"
+			"		key !== \"Backspace\" &&"
+			"		key !== \"Delete\" &&"
+			"		key !== \"ArrowLeft\" &&"
+			"		key !== \"Tab\" &&"
+			"		key !== \"ArrowRight\""
+			"	) {"
+			"		e.preventDefault(); // Mencegah input jika bukan angka atau koma"
+			"	}""});"
+		],
+		"description": "Log output to console"
+	},
 	"Simple Money Format": {
 		"prefix": "money",
 		"body": [
@@ -170,7 +195,7 @@
 	"form ajax": {
 		"prefix": "formajax",
 		"body": [
-			"let formdata = $('#$1 $2').serialize();",
+			"let formdata = $('form[id=\"$1\"]').serialize();",
 			"$.ajax({",
 			"data: formdata,",
 			"url: \"$5\",",
