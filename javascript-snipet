@@ -12,6 +12,13 @@
 		],
 		"description": "Log output to console"
 	},
+	"Print to console": {
+		"prefix": "ambilThis",
+		"body": [
+			"$(this).data('$1')"
+		],
+		"description": "Log output to console"
+	},
 	"Webalert": {
 		"prefix": "wealert",
 		"body": [
